@@ -1,8 +1,222 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> - acknow - </title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link rel="stylesheet" href="static/structure.css" />
   </head>
-  <body> <py-script> print('Hello, World!') </py-script> </body>
-</html>
+  <body>
+    <py-config>
+      packages = ["inflect"]
+      paths = ["acknowledgements.py"]
+    </py-config>
+    <div class="mx-auto mt-10 w-[80%] flex space-x-10">
+      <div class="flex-none h-10">
+          <div id="names" class="">
+            <!-- <div>
+              <input id="AlbertoNegrao" type="checkbox" class="m-2">
+              <label for="AlbertoNegrao" class="text-lg">Alberto Negrão</label>
+            </div> -->
+            <div>
+              <input id="Elisa" type="checkbox" class="m-2">
+              <label for="Elisa" class="text-lg">Elisa Delgado Mena</label>
+            </div>
+            <div>
+              <input id="Faria" type="checkbox" class="m-2">
+              <label for="Faria" class="text-lg">João Faria</label>
+            </div>
+            <div>
+              <input id="Jorge" type="checkbox" class="m-2">
+              <label for="Jorge" class="text-lg">Jorge Martins</label>
+            </div>
+            <div>
+              <input id="Filipe" type="checkbox" class="m-2">
+              <label for="Filipe" class="text-lg">Filipe Pereira</label>
+            </div>
+            <div>
+              <input id="Peixinho" type="checkbox" class="m-2">
+              <label for="Peixinho" class="text-lg">Nuno Peixinho</label>
+            </div>
+            <div>
+              <input id="Nuno" type="checkbox" class="m-2">
+              <label for="Nuno" class="text-lg">Nuno Santos</label>
+            </div>
+            <div>
+              <input id="Olivier" type="checkbox" class="m-2">
+              <label for="Olivier" class="text-lg">Olivier Demangeon</label>
+            </div>
+            <div>
+              <input id="PedroF" type="checkbox" class="m-2">
+              <label for="PedroF" class="text-lg">Pedro Figueira</label>
+            </div>
+            <div>
+              <input id="PedroM" type="checkbox" class="m-2">
+              <label for="PedroM" class="text-lg">Pedro Machado</label>
+            </div>
+            <div>
+              <input id="PedroP" type="checkbox" class="m-2">
+              <label for="PedroP" class="text-lg">Pedro Pina</label>
+            </div>
+            <div>
+              <input id="PedroL" type="checkbox" class="m-2">
+              <label for="PedroL" class="text-lg">Pedro Lacerda</label>
+            </div>
+            <div>
+              <input id="PedroV" type="checkbox" class="m-2">
+              <label for="PedroV" class="text-lg">Pedro Viana</label>
+            </div>
+            <div>
+              <input id="Sergio" type="checkbox" class="m-2">
+              <label for="Sergio" class="text-lg">Sérgio Sousa</label>
+            </div>
+            <div>
+              <input id="Susana" type="checkbox" class="m-2">
+              <label for="Susana" class="text-lg">Susana Barros</label>
+            </div>
+            <div>
+              <input id="Tiago" type="checkbox" class="m-2">
+              <label for="Tiago" class="text-lg">Tiago Campante</label>
+            </div>
+            <div>
+              <input id="Vardan" type="checkbox" class="m-2">
+              <label for="Vardan" class="text-lg">Vardan Adibekyan</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Alexandros Karnavas</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Ana Rita Silva</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">André Silva</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Bárbara Soares</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Daniela Espadinha</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Eduardo Cristo</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Francisco Brasil</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">José Rodrigues</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">José Ribeiro</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Nuno Rosário</label>
+            </div>
+            <div>
+              <input id="" type="checkbox" class="m-2">
+              <label for="" class="text-lg">Tomás Silva</label>
+            </div>
+          </div>
+      </div>
+      <div class="w-full h-[90vh] flex flex-col justify-between">
+        <div>
+        <div class="p-4 border-4 border-blue-500">
+          <p id="acknow"></p>
+          <py-script>
+            from acknowledgements import acknowledgements
+            import js
+            all_names = js.document.querySelectorAll("#names > *")
+            def selected():
+              names = []
+              for name in all_names:
+                ip = name.querySelector("input")
+                if ip.checked:
+                  names.append(ip.id)
+              ERC = js.document.querySelector("#ERC").checked
+              SAM = js.document.querySelector("#SAM").checked
+              CSI = js.document.querySelector("#CSI").checked
+              akn = acknowledgements(names, ERC=ERC, SAM=SAM, CSI=CSI,
+                                     notex=True)
+              pyscript.write('acknow', f'{akn}')
+
+            def clear_all():
+              for name in all_names:
+                name.querySelector("input").checked = False
+              pyscript.write('acknow', '')
+            
+            def select_all():
+              for name in all_names:
+                name.querySelector("input").checked = True
+          </py-script>
+        </div>
+        <!--  -->
+        <div class="mx-4 flex space-x-6">
+          <div>
+            <input id="ERC" type="checkbox" checked="true" class="my-5 h-4 w-4">
+            <label for="ERC" class="text-lg">ERC</label>
+          </div>
+          <div>
+            <input id="SAM" type="checkbox" class="my-5 h-4 w-4">
+            <label for="SAM" class="text-lg">SAM</label>
+          </div>
+          <div>
+            <input id="CSI" type="checkbox" class="my-5 h-4 w-4">
+            <label for="CSI" class="text-lg">CSI</label>
+          </div>
+        </div>
+        <!--  -->
+        <div class="flex justify-between">
+          <div>
+            <button py-click="selected()" id="ack-btn" class="mt-2 mx-1 p-1 px-2 bg-blue-600 text-white" class="py-button">
+              Acknowledge us!
+            </button>
+            <button py-click="select_all()" id="clear" class="mt-2 mx-1 p-1 px-2 bg-green-600 text-white">
+              Select all
+            </button>
+            <button py-click="clear_all()" id="clear" class="mt-2 mx-1 p-1 px-2 bg-orange-300">
+              Clear
+            </button>
+          </div>
+          <div>
+            <button class="mt-2 mx-1 p-1 px-2 bg-blue-600 text-white">
+              copy
+            </button>
+          </div>
+        </div>
+        </div>
+        <div class="text-right">
+          Created by <strong>João Faria</strong> 
+        <br> who acknowledges support from FCT
+        <br> 
+        <small>
+          any 
+          <a href="https://github.com/j-faria/acknow/issues" target="_blank"
+          style="text-decoration: underline;">
+          feedback</a>
+          is appreciated!
+        </small>
+        </div>
+      </div>
+      
+    </div>
+
+  </body>
+
+
+  </html>
 
