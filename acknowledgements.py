@@ -19,7 +19,7 @@ name = 'acknowledgements'
 FCT = r'Funda\c{c}\~ao para a Ci\^encia e a Tecnologia (FCT, Portugal)'
 FEDER = r'FEDER - Fundo Europeu de Desenvolvimento Regional'
 COMPETE2020 = r'COMPETE2020 - Programa Operacional Competitividade e Internacionaliza\c{c}\~ao'
-
+POCH = 'POCH/FSE (EC)'
 
 def from_tex(s):
     s = s.replace(r'\c{c}', 'ç')
@@ -64,6 +64,8 @@ def comma_separator(sequence, end_with_and=True):
 
     if len(sequence) == 1:
         return sequence[0]
+    elif len(sequence) == 2:
+        return ' and '.join(sequence)
 
     if end_with_and:
         return '{}, and {}'.format(', '.join(sequence[:-1]), sequence[-1])
@@ -113,7 +115,9 @@ def individual(initials, normal=True, dl57=False, ifct=False, width=80,
         msg += p.plural('reference ', n)
 
     elif ifct:
-        msg += f'{t2} support from FCT through Investigador FCT {t3} '
+        msg += p.plural_verb('acknowledges ', n)
+        msg += 'support from FCT through Investigador FCT '
+        msg += p.plural('contract ', n)
 
     msg += p.join(flatten(list(initials.values())))
 
@@ -137,9 +141,9 @@ IA_akn = {
 }
 
 team_akn = {
-    'GEANES': 'PTDC/FIS-AST/32113/2017 & POCI-01-0145-FEDER-032113',
-    'EPIC': 'PTDC/FIS-AST/28953/2017 & POCI-01-0145-FEDER-028953',
-    'unk1': 'PTDC/FIS-AST/28987/2017 & POCI-01-0145-FEDER-028987',
+    # 'GEANES': 'PTDC/FIS-AST/32113/2017 & POCI-01-0145-FEDER-032113',
+    # 'EPIC': 'PTDC/FIS-AST/28953/2017 & POCI-01-0145-FEDER-028953',
+    # 'unk1': 'PTDC/FIS-AST/28987/2017 & POCI-01-0145-FEDER-028987',
     'SAM': 'EXPL/FIS-AST/0615/2021',
     'CSI': 'EXPL/FIS-AST/XXXX/XXXX',
 }
@@ -153,17 +157,17 @@ erc_akn = {
 # 'PTDC/FIS-AST/1526/2014',
 # 'POCI-01-0145-FEDER-016886'
 
-Vardan_project = [
-    'PTDC/FIS-AST/7073/2014',
-    'POCI-01-0145-FEDER-016880',
-]
+# Vardan_project = [
+#     'PTDC/FIS-AST/7073/2014',
+#     'POCI-01-0145-FEDER-016880',
+# ]
 
 acknow = {
-    ('Elisa Delgado Mena', 'E.D.M.', 'Elisa'):           ['IF/00849/2015',],
+    ('Elisa Delgado Mena', 'E.D.M.', 'Elisa'):           ['IF/00849/2015/CP1273/CT0003'], #['IF/00849/2015',],
     ('João P. S. Faria', 'J.P.F.', 'Faria'):             ['DL57/2016/CP1364/CT0005'],  #['SFRH/BD/93848/2013',],
     ('Jorge H. C. Martins', 'J.H.C.M.', 'Jorge'):        ['DL57/2016/CP1364/CT0007'],
     ('João Gomes da Silva', 'J.G.dS.', 'GomesDaSilva'):  [],
-    ('L. Filipe Pereira', 'F.P.', 'Filipe'):             ['PD/BD/135227/2017'],
+    ('L. Filipe Pereira', 'F.P.', 'Filipe'):             [], #['PD/BD/135227/2017'],
     ('Nuno C. Santos', 'N.C.S.', 'Nuno'):                [],  #['IF/00169/2012/CP0150/CT0002',],
     ('Nuno Peixinho', 'N.', 'Peixinho'):                 [],
     ('Olivier D. S. Demangeon', 'O.D.', 'Olivier'):      ['DL57/2016/CP1364/CT0004'],
@@ -173,7 +177,7 @@ acknow = {
     ('Pedro Pina', 'P.P.', 'PedroPina'):                   [],
     ('Sérgio A. G. Sousa', 'S.G.S.', 'Sergio'):          ['IF/00028/2014/CP1215/CT0002',],
     ('Susana C. C. Barros', 'S.C.C.B.', 'Susana'):       ['IF/01312/2014/CP1215/CT0004',],
-    ('Tiago Campante', 'T.C.', 'Tiago'):                   ['IF/00650/2015/CP1273/CT0001'],  #['IF/00650/2015',],
+    ('Tiago Campante', 'T.C.', 'Tiago'):                 [], #  ['IF/00650/2015/CP1273/CT0001'],  #['IF/00650/2015',],
     ('Vardan Zh. Adibekyan', 'V.A.', 'Vardan'):          ['IF/00650/2015/CP1273/CT0001'],  #['IF/00650/2015',],
     #
     ('Alexandros Antoniadis Karnavas', 'A.A.K.', 'Alexandros'): [],
@@ -231,23 +235,25 @@ def acknowledgements(authors, noGEANES=False, noEPIC=False, ERC=True,
     # if 'Vardan' in authors:
     # add Vardan's project
 
-    projects = {**IA_akn, **team_akn_copy}
-
     if notex:
         detex = from_tex
     else:
         detex = lambda x: x
 
-    msg = 'This work was supported by %s through national funds ' % detex(FCT)
-    msg += f'and by {detex(FEDER)} '
-    msg += f'through {detex(COMPETE2020)} '
-    if len(projects) == 1:
-        msg += 'by the grant '
-    else:
-        msg += 'by these grants: '
-    # final = justy(msg, width, ret=True)
+    IA = IA_akn['IA']
 
-    msg += comma_separator(projects) + '. '
+    msg = f'This work was supported by {detex(FCT)} '
+    msg += f'through the research grants {comma_separator(IA)}'
+
+    if len(team_akn_copy) > 0:
+        msg += ' '
+        # msg += f'and by {detex(FEDER)} '
+        # msg += f'through {detex(COMPETE2020)} '
+        msg += f'and by {detex(POCH)} '
+        msg += p.plural('through the grant ', len(team_akn_copy))
+        msg += comma_separator(team_akn_copy)
+    
+    msg += '. '
 
     if ERC:
         msg += '\n'
@@ -305,81 +311,5 @@ if __name__ == '__main__':
         list_authors = sorted(list_authors)
         print(list_authors)
 
-    # build a dict with the acknowledgements for these authors only
-    ThisPaperAcknow = OrderedDict()
-    for author in list_authors:
-        for k, v in acknow.items():
-            if author in k:
-                ThisPaperAcknow[k] = v
-
-    # print the damn thing!!!
-    print('\n\n')
-    print(name)
-    print('=' * len(name) + '\n')
-
-    if args.noGEANES:
-        team_akn.pop('GEANES')
-    if args.noEPIC:
-        team_akn.pop('EPIC')
-    projects = {**IA_akn, **team_akn}
-
-    if args.notex:
-        pass
-    else:
-        from_tex = lambda x: x
-
-    msg = f'This work was supported by {from_tex(FCT)} through national funds '
-    msg += f'and by {from_tex(FEDER)} '
-    msg += f'through {from_tex(COMPETE2020)} '
-
-    P = len(projects)
-    msg += f"by {p.plural('this', P)} {p.plural('grant', P)}"
-
-    justy(msg, args.width)
-
-    if 'Vardan' in list_authors:
-        justy(comma_separator(team_akn + Vardan_project) + '.', args.width)
-    else:
-        justy(comma_separator(projects) + '.', args.width)
-
-    initials = [n[1] for n in list(ThisPaperAcknow.keys())]
-    dl57 = {}
-    ifct = {}
-    other = {}
-    for i, (initial,
-            (k, v)) in enumerate(zip(initials, list(ThisPaperAcknow.items()))):
-        if k[2] in DL57:
-            dl57[initial] = v
-        elif k[2] in iFCT:
-            ifct[initial] = v
-        else:
-            if v:
-                other[initial] = v
-        # if len(v)==0:
-        #     initials.pop(i)
-        #     ThisPaperAcknow.pop(k)
-
-    # do the DL57
-    # print()
-    individual(dl57, dl57=True, width=args.width)
-
-    # do the iFCT
-    # print()
-    individual(ifct, ifct=True, width=args.width)
-
-    # do the rest
-    # print()
-    individual(other, width=args.width)
-
-    # if len(initials) > 0:
-    #     if len(initials) == 1:
-    #         t1 = 'acknowledges'
-    #         t2 = 'the contract'
-    #     else:
-    #         t1 = 'acknowledge'
-    #         t2 = 'contracts'
-    #     print(comma_separator(initials) + ' ' + \
-    #           'further %s support from FCT through %s\n' % (t1, t2) + \
-    #           comma_separator(flatten(list(ThisPaperAcknow.values()))))
-
-    sys.exit(0)
+    akn = acknowledgements(list_authors)
+    print(akn)

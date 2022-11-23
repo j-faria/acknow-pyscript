@@ -152,11 +152,13 @@
               CSI = js.document.querySelector("#CSI").checked
               akn = acknowledgements(names, ERC=ERC, SAM=SAM, CSI=CSI,
                                      notex=True)
-              pyscript.write('acknow', f'{akn}')
+              Element("acknow").write(akn)
 
             def clear_all():
               for name in all_names:
                 name.querySelector("input").checked = False
+              js.document.querySelector("#SAM").checked = False
+              js.document.querySelector("#CSI").checked = False
               pyscript.write('acknow', '')
             
             def select_all():
@@ -175,8 +177,8 @@
             <label for="SAM" class="text-lg">SAM</label>
           </div>
           <div>
-            <input id="CSI" type="checkbox" class="my-5 h-4 w-4">
-            <label for="CSI" class="text-lg">CSI</label>
+            <input id="CSI" type="checkbox" disabled class="my-5 h-4 w-4">
+            <label for="CSI" class="text-lg text-gray-400">CSI</label>
           </div>
         </div>
         <!--  -->
@@ -193,7 +195,7 @@
             </button>
           </div>
           <div>
-            <button class="mt-2 mx-1 p-1 px-2 bg-blue-600 text-white">
+            <button id="copy-btn" onclick="copy_akn()" onmouseout="outfunc()" class="mt-2 mx-1 p-1 px-2 bg-blue-600 text-white">
               copy
             </button>
           </div>
@@ -205,7 +207,7 @@
         <br> 
         <small>
           any 
-          <a href="https://github.com/j-faria/acknow/issues" target="_blank"
+          <a href="https://github.com/j-faria/acknow-pyscript/issues" target="_blank"
           style="text-decoration: underline;">
           feedback</a>
           is appreciated!
@@ -214,6 +216,20 @@
       </div>
       
     </div>
+
+
+  <script>
+    function copy_akn() {
+      var text = document.getElementById("acknow");
+      navigator.clipboard.writeText(text.innerText);
+      var btn = document.getElementById("copy-btn");
+      btn.innerHTML = "copied!"
+    }
+    function outfunc() {
+      var btn = document.getElementById("copy-btn");
+      btn.innerHTML = "copy"
+    }
+  </script>
 
   </body>
 
