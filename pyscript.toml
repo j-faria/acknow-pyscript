@@ -1,0 +1,4 @@
+packages = ["inflect"]
+
+[[fetch]]
+files = ["./acknowledgements.py"]
